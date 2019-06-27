@@ -3,87 +3,203 @@
 
 <head>
     <meta charset="utf-8">
-    <meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,initial-scale=1.0,width=device-width" />
+    <meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0" />
     <meta name="format-detection" content="telephone=no,email=no,date=no,address=no">
     <title>Hello APP</title>
     <link rel="stylesheet" type="text/css" href="./css/api.css" />
+    <!-- <link rel="stylesheet" type="text/css" href="./css/swipe.css" /> -->
     <style type="text/css">
         html,
         body {
             height: 100%;
-        }
-
-        .wrap {
-            display: -webkit-box;
-            -webkit-box-orient: vertical;
-            -webkit-flex-flow: column;
-        }
-
-        header {
-            height: 44px;
             width: 100%;
-            text-align: center;
-            background-color: #81a9c3;
-            color: #fff;
-            line-height: 44px;
-            font-size: 20px;
         }
 
-        .flex-1 {
-            -webkit-box-flex: 1;
-            -webkit-flex: 1;
+        .show {
+            overflow: hidden;
         }
 
-        footer {
-            height: 30px;
+        .img {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+        }
+
+        .img img {}
+
+        .image {
+            position: fixed;
+            right: 0;
+            top: 0;
+        }
+
+        .swipe {
+            overflow: hidden;
+            visibility: hidden;
+            position: relative;
+        }
+
+        .swipe-wrap {
+            overflow: hidden;
+            position: relative;
+        }
+
+        .swipe-wrap>figure {
+            float: left;
             width: 100%;
-            background-color: #81a9c3;
-            color: white;
-            line-height: 30px;
-            text-align: center;
+            position: relative;
+        }
+
+        .swipe {
+            width: 100%;
+            background-color: #fff;
+            overflow: hidden;
+            position: relative;
+        }
+
+        .swipe-wrap {
+            overflow: hidden;
+            position: relative;
+        }
+
+        .swipe-wrap .swipe-box {
+            float: left;
+            width: 100%;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .swipe-box img {
+            width: 100%;
+            height: 100%;
+        }
+
+        .swipe .title-box {
+            width: 100%;
+            position: relative;
         }
     </style>
 </head>
 
-<body class="wrap">
-    <header>APICloud</header>
-    <section class="flex-1">
+<body>
+    <div class="show">
+        <!-- <div class="img" id="btn">
+            <img src="./image/bottn.png" alt="" onclick="randomSwitch();">
+        </div> -->
 
-    </section>
-    <footer>Copyright &copy;<span id="year"></span></footer>
+        <div id='slider' class='swipe'>
+            <div class='swipe-wrap'>
+                <div class="swipe-box">
+                    <img src="image/1.png" alt="">
+                </div>
+                <div class="swipe-box">
+                    <img src="image/02.png" alt="">
+                </div>
+            </div>
+            <button onclick="prev()">prev</button>
+            <button onclick="next()">next</button>
+        </div>
+    </div>
 </body>
 <script type="text/javascript" src="./script/api.js"></script>
+<script type="text/javascript" src="./script/swiper.min.js"></script>
+<script type="text/javascript" src="./script/swipe.js"></script>
 <script type="text/javascript">
     apiready = function() {
-        //输出Log，Log将显示在APICloud Studio控制台
-        console.log("Hello World! Hello APICloud!");
 
-        var header = $api.dom('header'); // 获取 header 标签元素
-        var footer = $api.dom('footer'); // 获取 footer 标签元素
+    }
 
-        // 1.修复开启沉浸式效果带来的顶部Header与手机状态栏重合的问题，最新api.js方法已支持适配iPhoneX；
-        // 2.默认已开启了沉浸式效果 config.xml中 <preference name="statusBarAppearance" value="true"/>
-        // 3.沉浸式效果适配支持iOS7+，Android4.4+以上版本
-        var headerH = $api.fixStatusBar(header);
-        // 最新api.js为了适配iPhoneX增加的方法，修复底部Footer部分与iPhoneX的底部虚拟横条键重叠的问题；
-        var footerH = $api.fixTabBar(footer);
-
-        api.openFrame({
-            name: 'main',
-            url: 'html/main.html',
-            bounces: true,
-            rect: { // 推荐使用Margin布局，用于适配屏幕的动态变化
-                marginTop: headerH, // main页面距离win顶部的高度
-                marginBottom: footerH, // main页面距离win底部的高度
-                w: 'auto' // main页面的宽度 自适应屏幕宽度
-            }
-        });
-
-        // 获取当前年份时间，并加载显示到页面
-        var year = $api.byId('year');
-        year.innerHTML = new Date().getFullYear();
-    };
-
+    var slider = Swipe(document.getElementById('slider'), {
+        auto: 3000,
+        continuous: true,
+        prev();
+        next();
+        //  callback: function(pos) {}
+    });
+    // var swiper = new Swiper('.swiper-container', {
+    //     navigation: {
+    //         nextEl: '.swiper-button-next',
+    //         prevEl: '.swiper-button-prev',
+    //     },
+    // });
+    // apiready = function() {
+    //     //输出Log，Log将显示在APICloud Studio控制台
+    //     var header = $api.dom('header'); // 获取 header 标签元素
+    //     var footer = $api.dom('footer'); // 获取 footer 标签元素
+    //     var headerH = $api.fixStatusBar(header);
+    //     var footerH = $api.fixTabBar(footer);
+    //     var year = $api.byId('year');
+    // };
+    //
+    // function randomSwitch() {
+    //
+    //     document.getElementById("btn").style.display = "none";
+    //
+    //     var UIScrollPromptView = api.require('UIScrollPromptView');
+    //     UIScrollPromptView.open({
+    //         rect: {
+    //             x: 0,
+    //             y: 0,
+    //             w: api.winWidth,
+    //             h: api.winHeight
+    //         },
+    //         data: {
+    //             paths: [
+    //                 'image/1.png',
+    //                 'image/02.png'
+    //             ]
+    //             // captions: ['apicloud', 'apicloud', 'apicloud', 'apicloud'],
+    //             // prompts: [
+    //             //     'widget://res/img/apicloud.png',
+    //             //     'widget://res/img/apicloud-gray.png',
+    //             //     'widget://res/img/apicloud.png',
+    //             //     'widget://res/img/apicloud-gray.png'
+    //             // ]
+    //         },
+    //         styles: {
+    //             caption: {
+    //                 height: 35,
+    //                 color: '#E0FFFF',
+    //                 size: 13,
+    //                 bgColor: '#696969',
+    //                 position: 'bottom'
+    //             },
+    //             indicator: {
+    //                 align: 'center',
+    //                 color: '#FFFFFF',
+    //                 activeColor: '#DA70D6'
+    //             },
+    //             prompt: {
+    //                 button: {
+    //                     // normal: 'widget://image/btn_normal.png',
+    //                     // highlight: 'widget://image/btn_highlight.png',
+    //                     x: 0,
+    //                     y: 100,
+    //                     w: 60,
+    //                     h: 40
+    //                 },
+    //                 x: 0,
+    //                 y: 50,
+    //                 w: 160,
+    //                 h: 90,
+    //                 contentMode: 'scaleToFill',
+    //                 animation: true
+    //             }
+    //         },
+    //         // placeholderImg: 'widget://res/slide1.jpg',
+    //         contentMode: 'scaleToFill',
+    //         interval: 3,
+    //         auto:false,
+    //         fixedOn: api.frameName,
+    //         loop: false,
+    //         fixed: false
+    //     }, function(ret) {
+    //         if (ret) {
+    //             // alert(JSON.stringify(ret));
+    //         }
+    //     });
+    //
+    // };
 </script>
 
 </html>

@@ -3,69 +3,93 @@
 
 <head>
     <meta charset="utf-8">
-    <meta name="viewport" content="maximum-scale=1.0, minimum-scale=1.0, user-scalable=0, initial-scale=1.0, width=device-width" />
-    <meta name="format-detection" content="telephone=no, email=no, date=no, address=no">
+    <meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0" />
+    <meta name="format-detection" content="telephone=no,email=no,date=no,address=no">
     <title>Hello APP</title>
     <link rel="stylesheet" type="text/css" href="../css/api.css" />
     <style>
-        label {
-            margin: 10px;
-            font-size: 24px;
+        .img {
+            position: fixed;
+            right: 40px;
+            bottom: 40px;
         }
 
-        ul {
-            margin-bottom: 10px;
-        }
-
-        ul li {
-            margin: 5px 10px;
-            padding: 5px;
-            color: #000;
-            word-wrap: break-word;
+        .img img {
+            width:
         }
     </style>
 </head>
 
 <body>
-    <label>Hello APP</label>
-    <div id='sys-info'></div>
+    <div class="show">
+        <div class="img" id="btn">
+            <img src="../image/bottn.png" alt="" onclick="randomSwitch();">
+        </div>
+        <div class="image">
+
+        </div>
+    </div>
 </body>
 <script type="text/javascript" src="../script/api.js"></script>
 <script type="text/javascript">
     apiready = function() {
-        var ver = api.version;
-        var sType = api.systemType;
-        var sVer = api.systemVersion;
-        var id = api.deviceId;
-        var model = api.deviceModel;
-        var name = api.deviceName;
-        var cType = api.connectionType;
-        var winName = api.winName;
-        var winWidth = api.winWidth;
-        var winHeight = api.winHeight;
-        var frameName = api.frameName || '';
-        var frameWidth = api.frameWidth || '';
-        var frameHeight = api.frameHeight || '';
-
-        var str = '<ul>';
-        str += '<li>引擎版本信息: ' + ver + '</li>';
-        str += '<li>系统类型: ' + sType + '</li>';
-        str += '<li>系统版本: ' + sVer + '</li>';
-        str += '<li>设备标识: ' + id + '</li>';
-        str += '<li>设备型号: ' + model + '</li>';
-        str += '<li>设备名称: ' + name + '</li>';
-        str += '<li>网络状态: ' + cType + '</li>';
-        str += '<li>主窗口名字: ' + winName + '</li>';
-        str += '<li>主窗口宽度: ' + winWidth + '</li>';
-        str += '<li>主窗口高度: ' + winHeight + '</li>';
-        str += '<li>子窗口名字: ' + frameName + '</li>';
-        str += '<li>子窗口宽度: ' + frameWidth + '</li>';
-        str += '<li>子窗口高度: ' + frameHeight + '</li>';
-        str += '</ul>';
-
-        $api.byId('sys-info').innerHTML = str;
-
+        randomSwitch()
     };
+
+    function randomSwitch() {
+        console.log('1');
+        document.getElementById("btn").style.display = "none";
+        // var UIScrollPicture = api.require('UIScrollPicture');
+        // UIScrollPicture.open({
+                // rect: {
+                    // x: 0,
+                    // y: 0,
+                    // w: api.winWidth,
+                    // h: api.winHeight / 2
+                // },
+            // data: {
+                // paths: [
+                    // 'widget://image/1.png',
+                    // 'widget://image/02.png',
+
+                // ],
+                // captions: ['apicloud', 'apicloud', 'apicloud', 'apicloud']
+            // },
+            //     styles: {
+            //         caption: {
+            //             height: 35,
+            //             color: '#E0FFFF',
+            //             size: 13,
+            //             bgColor: '#696969',
+            //             position: 'bottom'
+            //         },
+            //         indicator: {
+            //            dot:{
+            //              w:20,
+            //              h:10,
+            //              r:5,
+            //              margin:20
+            //           },
+            //             align: 'center',
+            //             color: '#FFFFFF',
+            //             activeColor: '#DA70D6'
+            //         }
+            //     },
+            //     placeholderImg: 'widget://res/slide1.jpg',
+            //     contentMode: 'scaleToFill',
+            //     interval: 3,
+            //     fixedOn: api.frameName,
+            //     loop: true,
+            //     fixed: false
+            // }, function(ret, err) {
+            //     if (ret) {
+            //         alert(JSON.stringify(ret));
+            //     } else {
+            //         alert(JSON.stringify(err));
+            //     }
+        // });
+
+    }
 </script>
 
 </html>
