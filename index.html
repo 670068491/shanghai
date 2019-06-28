@@ -17,26 +17,42 @@
 
         .show {
             overflow: hidden;
+            position: relative;
         }
 
         .img {
             position: fixed;
-            bottom: 30px;
-            right: 30px;
+            bottom: 3vw;
+            right: 5vw;
+            z-index: 20;
+            /*display: none;*/
         }
 
-        .img img {}
+        .img img {
+            width: 50vw;
+            height: 20vw;
+        }
 
-        .image {
+        .return {
             position: fixed;
-            right: 0;
-            top: 0;
+            bottom: 0vw;
+            right: 0vw;
+            z-index: 20;
+            display: none;
+        }
+
+        .return img {
+            width: 17vw;
+            height: 10vw;
         }
 
         .swipe {
+            width: 100%;
+            background-color: #fff;
             overflow: hidden;
-            visibility: hidden;
             position: relative;
+            visibility: hidden;
+            opacity: 0;
         }
 
         .swipe-wrap {
@@ -50,18 +66,6 @@
             position: relative;
         }
 
-        .swipe {
-            width: 100%;
-            background-color: #fff;
-            overflow: hidden;
-            position: relative;
-        }
-
-        .swipe-wrap {
-            overflow: hidden;
-            position: relative;
-        }
-
         .swipe-wrap .swipe-box {
             float: left;
             width: 100%;
@@ -71,57 +75,185 @@
 
         .swipe-box img {
             width: 100%;
-            height: 100%;
+            height: 100vh;
         }
 
         .swipe .title-box {
             width: 100%;
             position: relative;
         }
+
+        .btn .left {
+            position: absolute;
+            right: 12vw;
+            top: 6vw;
+        }
+
+        .btn .left img {
+            max-height: 5.2vw;
+            max-width: 5vw;
+        }
+
+        .btn .right {
+            position: absolute;
+            right: 5vw;
+            top: 6vw;
+        }
+
+        .btn .right img {
+            max-height: 5.2vw;
+            max-width: 5vw;
+        }
     </style>
 </head>
 
 <body>
     <div class="show">
-        <!-- <div class="img" id="btn">
-            <img src="./image/bottn.png" alt="" onclick="randomSwitch();">
-        </div> -->
+        <div class="img" id="btn">
+            <img src="./image/bottn.png" alt="" onclick="randomSwitch()">
+        </div>
 
         <div id='slider' class='swipe'>
-            <div class='swipe-wrap'>
-                <div class="swipe-box">
-                    <img src="image/1.png" alt="">
+            <div class='swipe-wrap' id="swipe-wrap">
+                <div class="swipe-box" id="swipebox">
+                <!-- <img src="image/1.png" alt=""> -->
                 </div>
-                <div class="swipe-box">
-                    <img src="image/02.png" alt="">
-                </div>
+
             </div>
-            <button onclick="prev()">prev</button>
-            <button onclick="next()">next</button>
+        </div>
+
+        <div class="btn">
+            <div id='left' class='left' onclick='slider.prev()' style="opacity:0"><img src="./image/left.png" alt=""></div>
+            <div id='right' class='right' onclick='slider.next()' style="opacity:0"><img src="./image/right.png" alt=""> </div>
+        </div>
+        <div class="return" id='return'>
+            <img src="./image/return.png" alt="" onclick="returnSwitch()">
         </div>
     </div>
 </body>
+
 <script type="text/javascript" src="./script/api.js"></script>
-<script type="text/javascript" src="./script/swiper.min.js"></script>
+<!-- <script type="text/javascript" src="./script/jquery-1.11.2.min.js"></script> -->
 <script type="text/javascript" src="./script/swipe.js"></script>
 <script type="text/javascript">
     apiready = function() {
 
+        // var header = $api.byId('header1');
+        // $api.fixStatusBar(header);
+        // topH = parseInt(($("#header1").css("paddingTop")));
+        //设置屏幕 旋转
+        api.setScreenOrientation({
+            orientation: 'landscape_right'
+        });
+        // none();
+        var UIMediaScanner = api.require('UIMediaScanner');
+        var image = [];
+        // slider
+        var oSwipe = document.getElementById("swipe-wrap");
+        // var oSlider = document.getElementById("slider");
+        // var oSwipebox = document.getElementById("swipebox");
+        // if(){
+        // }
+        UIMediaScanner.open({
+            type: 'picture',
+            column: 4,
+            classify: true,
+            max: 4,
+            sort: {
+                key: 'time',
+                order: 'desc'
+            },
+            texts: {
+                stateText: '已选择*项',
+                cancelText: '取消',
+                finishText: '完成'
+            },
+            styles: {
+                bg: '#fff',
+                mark: {
+                    icon: '',
+                    position: 'bottom_left',
+                    size: 20
+                },
+                nav: {
+                    bg: '#eee',
+                    stateColor: '#000',
+                    stateSize: 18,
+                    cancelBg: 'rgba(0,0,0,0)',
+                    cancelColor: '#000',
+                    cancelSize: 18,
+                    finishBg: 'rgba(0,0,0,0)',
+                    finishColor: '#000',
+                    finishSize: 18
+                }
+            },
+            scrollToBottom: {
+                intervalTime: 3,
+                anim: true
+            },
+            exchange: true,
+            rotation: true
+        }, function(ret) {
+            if (ret) {
+
+                // var oDiv = document.createElement("div");
+                // alert(JSON.stringify(ret));
+
+                // 循环
+                for (var i = 0; i < ret.list.length; i++) {
+                    // alert(ret.list.length);
+
+                    var oImg = document.createElement('img');
+                    var oDiva = document.createElement('div');
+                    oDiva.class = "swipe-box";
+                    var n = ret.list.path;
+                    oImg.src = n;
+                    oDiva.appendChild(oImg);
+                    oSwipe.appendChild(oDiva);
+                        // oSwipe.appendChild(oImg);
+                }
+            }
+        });
+
+
+
     }
 
+    // function none() {
+    //     document.getElementById("slider").style.display = "none";
+    // }
+
+    function randomSwitch() {
+        document.getElementById("btn").style.display = "none";
+        // $api.attr($api.byId('btn'), 'style', 'display:none');
+        // $api.attr($api.byId('slider'), 'style', 'display:block');
+        document.getElementById("slider").style.opacity = "1";
+        document.getElementById("left").style.opacity = "1";
+        document.getElementById("right").style.opacity = "1";
+        document.getElementById("return").style.display = "block";
+
+    };
+
+    function returnSwitch() {
+        document.getElementById("btn").style.display = "block";
+        document.getElementById("slider").style.opacity = "0";
+        document.getElementById("left").style.opacity = "0";
+        document.getElementById("right").style.opacity = "0";
+        document.getElementById("return").style.display = "none";
+    };
+    // var elem = document.getElementById('mySwipe');
     var slider = Swipe(document.getElementById('slider'), {
-        auto: 3000,
-        continuous: true,
-        prev();
-        next();
+        auto: false,
+        continuous: false,
+        disableScroll: true,
+        stopPropagation: true,
+        // next(),
         //  callback: function(pos) {}
     });
-    // var swiper = new Swiper('.swiper-container', {
-    //     navigation: {
-    //         nextEl: '.swiper-button-next',
-    //         prevEl: '.swiper-button-prev',
-    //     },
-    // });
+
+
+
+
     // apiready = function() {
     //     //输出Log，Log将显示在APICloud Studio控制台
     //     var header = $api.dom('header'); // 获取 header 标签元素
@@ -131,75 +263,6 @@
     //     var year = $api.byId('year');
     // };
     //
-    // function randomSwitch() {
-    //
-    //     document.getElementById("btn").style.display = "none";
-    //
-    //     var UIScrollPromptView = api.require('UIScrollPromptView');
-    //     UIScrollPromptView.open({
-    //         rect: {
-    //             x: 0,
-    //             y: 0,
-    //             w: api.winWidth,
-    //             h: api.winHeight
-    //         },
-    //         data: {
-    //             paths: [
-    //                 'image/1.png',
-    //                 'image/02.png'
-    //             ]
-    //             // captions: ['apicloud', 'apicloud', 'apicloud', 'apicloud'],
-    //             // prompts: [
-    //             //     'widget://res/img/apicloud.png',
-    //             //     'widget://res/img/apicloud-gray.png',
-    //             //     'widget://res/img/apicloud.png',
-    //             //     'widget://res/img/apicloud-gray.png'
-    //             // ]
-    //         },
-    //         styles: {
-    //             caption: {
-    //                 height: 35,
-    //                 color: '#E0FFFF',
-    //                 size: 13,
-    //                 bgColor: '#696969',
-    //                 position: 'bottom'
-    //             },
-    //             indicator: {
-    //                 align: 'center',
-    //                 color: '#FFFFFF',
-    //                 activeColor: '#DA70D6'
-    //             },
-    //             prompt: {
-    //                 button: {
-    //                     // normal: 'widget://image/btn_normal.png',
-    //                     // highlight: 'widget://image/btn_highlight.png',
-    //                     x: 0,
-    //                     y: 100,
-    //                     w: 60,
-    //                     h: 40
-    //                 },
-    //                 x: 0,
-    //                 y: 50,
-    //                 w: 160,
-    //                 h: 90,
-    //                 contentMode: 'scaleToFill',
-    //                 animation: true
-    //             }
-    //         },
-    //         // placeholderImg: 'widget://res/slide1.jpg',
-    //         contentMode: 'scaleToFill',
-    //         interval: 3,
-    //         auto:false,
-    //         fixedOn: api.frameName,
-    //         loop: false,
-    //         fixed: false
-    //     }, function(ret) {
-    //         if (ret) {
-    //             // alert(JSON.stringify(ret));
-    //         }
-    //     });
-    //
-    // };
 </script>
 
 </html>
